@@ -1,3 +1,37 @@
+let gender=document.getElementById("gender").value;
+
+let married=document.getElementById("married").value;
+
+let childGender=document.getElementById("childGender").value;
+
+let childAge=document.getElementById("childAge").value;
+document.getElementById("married").addEventListener("change",function(){
+
+if(this.value=="Married"){
+
+document.getElementById("children").disabled=false;
+
+document.getElementById("childGender").disabled=false;
+
+document.getElementById("childAge").disabled=false;
+
+}else{
+
+document.getElementById("children").disabled=true;
+
+document.getElementById("childGender").disabled=true;
+
+document.getElementById("childAge").disabled=true;
+
+document.getElementById("children").value="";
+
+document.getElementById("childGender").value="";
+
+document.getElementById("childAge").value="";
+
+}
+
+});
 const startBtn = document.getElementById("startBtn");
 const formSection = document.getElementById("formSection");
 const hero = document.querySelector(".hero");
