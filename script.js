@@ -5,6 +5,7 @@ const loading = document.getElementById("loading");
 const result = document.getElementById("result");
 const generate = document.getElementById("generate");
 const bar = document.getElementById("bar");
+const childrenContainer = document.getElementById("childrenContainer");
 
 // Married Change
 document.getElementById("married").addEventListener("change",function(){
@@ -12,18 +13,50 @@ document.getElementById("married").addEventListener("change",function(){
     if(this.value=="Married"){
 
         document.getElementById("children").disabled=false;
-        document.getElementById("childGender").disabled=false;
-        document.getElementById("childAge").disabled=false;
 
     }else{
 
         document.getElementById("children").disabled=true;
-        document.getElementById("childGender").disabled=true;
-        document.getElementById("childAge").disabled=true;
-
         document.getElementById("children").value="";
-        document.getElementById("childGender").value="";
-        document.getElementById("childAge").value="";
+        childrenContainer.innerHTML="";
+
+    }
+
+});
+
+// Children Count Change -> Dynamic Gender + Age fields
+document.getElementById("children").addEventListener("input",function(){
+
+    let count=parseInt(this.value)||0;
+
+    if(count>10) count=10;
+    if(count<0) count=0;
+
+    childrenContainer.innerHTML="";
+
+    for(let i=1;i<=count;i++){
+
+        let block=document.createElement("div");
+        block.style.marginBottom="15px";
+        block.style.padding="12px";
+        block.style.border="1px solid #ddd";
+        block.style.borderRadius="10px";
+        block.style.background="#f7f9fc";
+
+        block.innerHTML=`
+            <p style="margin-bottom:10px;font-weight:600;color:#0f4c81;">Child ${i} Details</p>
+
+            <select id="childGender_${i}" style="margin-bottom:10px;">
+                <option value="">Child ${i} Gender</option>
+                <option value="Boy">👦 Boy</option>
+                <option value="Girl">👧 Girl</option>
+            </select>
+
+            <input type="number" id="childAge_${i}" placeholder="Child ${i} Age" min="0" max="30">
+        `;
+
+        childrenContainer.appendChild(block);
+
     }
 
 });
@@ -50,9 +83,18 @@ generate.onclick=function(){
     let married=document.getElementById("married").value;
     let gender=document.getElementById("gender").value;
     let children=parseInt(document.getElementById("children").value)||0;
-    let childGender=document.getElementById("childGender").value;
-    let childAge=document.getElementById("childAge").value;
     let goal=document.getElementById("goal").value;
+
+    let childrenData=[];
+
+    for(let i=1;i<=children;i++){
+
+        let g=document.getElementById("childGender_"+i)?.value || "Not specified";
+        let a=document.getElementById("childAge_"+i)?.value || "Not specified";
+
+        childrenData.push(`Child ${i}: ${g}, Age ${a}`);
+
+    }
 
     if(name=="" || mobile=="" || !age || !income){
 
@@ -193,7 +235,7 @@ Monthly Income : ₹${income}
 
 Financial Goal : ${goal}
 
-Score : ${score}/100
+Score : ${score}/100${childrenData.length>0 ? "\nChildren Details:\n"+childrenData.join("\n") : ""}
 
 Please guide me with a suitable financial plan.`;
 
