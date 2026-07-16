@@ -49,6 +49,11 @@ generate.onclick = () => {
     let children = parseInt(document.getElementById("children").value) || 0;
     let goal = document.getElementById("goal").value;
 
+    let gender = document.getElementById("gender").value;
+    let married = document.getElementById("married").value;
+    let childGender = document.getElementById("childGender").value;
+    let childAge = document.getElementById("childAge").value;
+
     if(name=="" || mobile=="" || age=="" || income==""){
         alert("Please fill all required fields.");
         return;
@@ -143,76 +148,7 @@ const timer = setInterval(() => {
 
         document.getElementById("retirement").innerHTML=
         "👴 Retirement Investment Suggestion : ₹"+retirement+"/month";
-        let aiText="";
-        if(married=="Single"){
-
-aiText=
-"👤 <b>AI सलाह</b><br><br>"+
-"आपके पास सबसे बड़ी ताकत समय है।<br>"+
-"💰 आज से SIP शुरू करें।<br>"+
-"📈 Long Term Investment करें।<br>"+
-"⭐ भविष्य में बड़ा Corpus बना सकते हैं।";
-
-}
-
-else if(married=="Married" && children==0){
-
-aiText=
-"👨‍👩‍👧 <b>AI सलाह</b><br><br>"+
-"🛡 परिवार की सुरक्षा सबसे पहले।<br>"+
-"💰 Emergency Fund बनाएं।<br>"+
-"🛡 पर्याप्त Life Insurance रखें।";
-
-}
-
-else if(childGender=="Girl"){
-
-aiText=
-"👧 <b>AI सलाह</b><br><br>"+
-"🎓 बेटी की शिक्षा के लिए निवेश शुरू करें।<br>"+
-"💍 कन्यादान/विवाह निधि योजना पर विचार करें।<br>"+
-"💰 छोटी बचत भविष्य में बड़ा सहारा बन सकती है।";
-
-}
-
-else if(childGender=="Boy"){
-
-    if(goal=="Wealth Creation"){
-
-aiText+="<br><br>💼 <b>Wealth Creation</b><br>"+
-"हर महीने नियमित SIP द्वारा संपत्ति निर्माण करें।";
-
-}
-
-if(goal=="Retirement"){
-
-aiText+="<br><br>👴 <b>Retirement</b><br>"+
-"आज से Pension Planning शुरू करें।";
-
-}
-
-if(goal=="Family Protection"){
-
-aiText+="<br><br>🛡 <b>Family Protection</b><br>"+
-"Health Insurance + Life Insurance दोनों आवश्यक हैं।";
-
-}
-
-if(goal=="Tax Saving"){
-
-aiText+="<br><br>💰 <b>Tax Saving</b><br>"+
-"ऐसे निवेश चुनें जिनसे टैक्स भी बचे और Wealth भी बने।";
-
-}
-
-if(goal=="Child Education"){
-
-aiText+="<br><br>🎓 <b>Child Education</b><br>"+
-"शिक्षा निधि के लिए नियमित निवेश सबसे बेहतर विकल्प है।";
-
-}
-
-document.getElementById("aiMessage").innerHTML=aiText;
+        
 aiText=
 "👦 <b>AI सलाह</b><br><br>"+
 "🎓 उच्च शिक्षा हेतु अभी से योजना बनाएं।<br>"+
