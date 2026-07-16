@@ -87,37 +87,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
                 id="mobile"
                 placeholder="Mobile Number">
 
-            <input type="number"
-                id="age"
-                placeholder="Age">
-
-            <input type="number"
-                id="income"
-                placeholder="Monthly Income">
-
-            <select id="gender">
-
-<option value="">Gender</option>
-
-<option value="Male">👨 Male</option>
-
-<option value="Female">👩 Female</option>
-
-</select>
-
-<select id="married">
-
-<option value="">Marital Status</option>
-
-<option>Single</option>
-
-<option>Married</option>
-
-</select>
-            
-            <input type="number"
+            <input
+type="number"
 id="children"
 placeholder="Number of Children"
+min="0"
+max="10"
+disabled>
+
+<select
+id="childGender"
+disabled>
+
+<option value="">Select Child</option>
+
+<option value="Boy">👦 Son</option>
+
+<option value="Girl">👧 Daughter</option>
+
+</select>
+
+<input
+type="number"
+id="childAge"
+placeholder="Child Age (Years)"
+min="0"
+max="30"
 disabled>
 
 <select id="childGender" disabled>
