@@ -1,10 +1,4 @@
-let gender=document.getElementById("gender").value;
 
-let married=document.getElementById("married").value;
-
-let childGender=document.getElementById("childGender").value;
-
-let childAge=document.getElementById("childAge").value;
 document.getElementById("married").addEventListener("change",function(){
 
 if(this.value=="Married"){
@@ -47,7 +41,7 @@ startBtn.onclick = () => {
 };
 
 generate.onclick = () => {
-
+    
     let name = document.getElementById("name").value;
     let mobile = document.getElementById("mobile").value;
     let age = parseInt(document.getElementById("age").value);
