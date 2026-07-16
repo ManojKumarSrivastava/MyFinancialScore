@@ -1,0 +1,285 @@
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:'Poppins',sans-serif;
+}
+
+body{
+background:#eef5ff;
+color:#222;
+}
+
+/* HERO */
+
+.hero{
+height:100vh;
+background:linear-gradient(135deg,#0f4c81,#1c7ed6);
+display:flex;
+justify-content:center;
+align-items:center;
+text-align:center;
+padding:20px;
+}
+
+.overlay{
+background:rgba(255,255,255,.12);
+backdrop-filter:blur(12px);
+padding:40px;
+border-radius:20px;
+max-width:700px;
+width:100%;
+box-shadow:0 15px 40px rgba(0,0,0,.2);
+}
+
+.hero h1{
+font-size:52px;
+color:#fff;
+margin-bottom:10px;
+}
+
+.hero h2{
+color:#fff;
+font-size:26px;
+margin-bottom:20px;
+font-weight:500;
+}
+
+.hero p{
+color:#f2f2f2;
+font-size:18px;
+margin-bottom:30px;
+line-height:1.6;
+}
+
+button{
+background:#00c853;
+color:#fff;
+padding:15px 35px;
+border:none;
+border-radius:10px;
+font-size:18px;
+cursor:pointer;
+transition:.3s;
+}
+
+button:hover{
+background:#009624;
+transform:translateY(-2px);
+}
+
+/* FORM */
+
+.formSection{
+display:none;
+padding:40px 15px;
+}
+
+.card{
+max-width:650px;
+margin:auto;
+background:#fff;
+padding:30px;
+border-radius:18px;
+box-shadow:0 10px 35px rgba(0,0,0,.12);
+}
+
+.card h2{
+text-align:center;
+margin-bottom:25px;
+color:#0f4c81;
+}
+
+.progress{
+width:100%;
+height:10px;
+background:#ddd;
+border-radius:30px;
+margin-bottom:25px;
+overflow:hidden;
+}
+
+.bar{
+width:0%;
+height:100%;
+background:#00c853;
+transition:.5s;
+}
+
+input,
+select{
+width:100%;
+padding:15px;
+margin-bottom:18px;
+border:1px solid #ccc;
+border-radius:10px;
+font-size:16px;
+}
+
+/* LOADING */
+
+#loading{
+display:none;
+text-align:center;
+padding:90px 20px;
+}
+
+.loader{
+width:70px;
+height:70px;
+margin:auto;
+border:8px solid #ddd;
+border-top:8px solid #0f4c81;
+border-radius:50%;
+animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+
+100%{
+transform:rotate(360deg);
+}
+
+}
+
+#loading h2{
+margin-top:25px;
+color:#0f4c81;
+}
+
+/* RESULT */
+
+#result{
+display:none;
+padding:50px 15px;
+}
+
+.resultCard{
+max-width:700px;
+margin:auto;
+background:#fff;
+padding:35px;
+border-radius:18px;
+box-shadow:0 15px 35px rgba(0,0,0,.12);
+text-align:center;
+}
+
+/* ===== Animated Score Circle ===== */
+
+.scoreCircle{
+    position:relative;
+    width:180px;
+    height:180px;
+    margin:30px auto;
+}
+
+.scoreCircle svg{
+    width:180px;
+    height:180px;
+    transform:rotate(-90deg);
+}
+
+.bg-circle{
+    fill:none;
+    stroke:#e5e7eb;
+    stroke-width:12;
+}
+
+.progress-circle{
+    fill:none;
+    stroke:#00c853;
+    stroke-width:12;
+    stroke-linecap:round;
+
+    stroke-dasharray:471;
+    stroke-dashoffset:471;
+
+    transition:stroke-dashoffset 1.5s ease;
+}
+
+.scoreText{
+    position:absolute;
+    top:0;
+    left:0;
+    width:180px;
+    height:180px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    font-size:50px;
+    font-weight:700;
+    color:#00c853;
+}
+
+#grade{
+color:#0f4c81;
+margin-bottom:25px;
+}
+
+.report p{
+font-size:18px;
+padding:12px;
+background:#f7f9fc;
+margin:10px 0;
+border-radius:8px;
+}
+
+#whatsappBtn{
+display:inline-block;
+margin-top:25px;
+background:#25D366;
+color:#fff;
+padding:15px 30px;
+border-radius:10px;
+text-decoration:none;
+font-weight:600;
+}
+
+.resultCard a:last-child{
+display:inline-block;
+margin-top:18px;
+color:#0f4c81;
+font-weight:bold;
+text-decoration:none;
+}
+
+/* MOBILE */
+
+@media(max-width:768px){
+
+.hero h1{
+font-size:38px;
+}
+
+.hero h2{
+font-size:22px;
+}
+
+.scoreCircle{
+width:150px;
+height:150px;
+}
+
+.scoreCircle svg{
+width:150px;
+height:150px;
+}
+
+.scoreText{
+width:150px;
+height:150px;
+font-size:42px;
+}
+
+.card,
+.resultCard{
+padding:22px;
+}
+
+button{
+width:100%;
+}
+
+}

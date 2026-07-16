@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>MyFinancialScore - AI Financial Health Checkup</title>
+
+    <!-- WhatsApp Preview -->
+    <meta property="og:title" content="MyFinancialScore">
+
+    <meta property="og:description"
+          content="AI आधारित वित्तीय हेल्थ चेकअप - मात्र 2 मिनट में अपनी Financial Score जानें।">
+
+    <meta property="og:image" content="preview.jpg">
+
+    <meta property="og:type" content="website">
+
+    <link rel="stylesheet" href="style.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap"
+          rel="stylesheet">
+
+</head>
+
+<body>
+
+    <!-- Hero Section -->
+
+    <section class="hero">
+
+        <div class="overlay">
+
+            <h1>My Financial Score</h1>
+
+            <h2>AI Powered Financial Health Checkup</h2>
+
+            <p>
+                Know Your Financial Strength in Just 2 Minutes
+            </p>
+
+            <button id="startBtn">
+                Start Free Assessment
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- Assessment Form -->
+
+    <section class="formSection" id="formSection">
+
+        <div class="card">
+
+            <div class="progress">
+
+                <div class="bar" id="bar"></div>
+
+            </div>
+
+            <h2>Financial Assessment</h2>
+
+            <input type="text"
+                id="name"
+                placeholder="Full Name">
+
+            <input type="tel"
+                id="mobile"
+                placeholder="Mobile Number">
+
+            <input type="number"
+                id="age"
+                placeholder="Age">
+
+            <input type="number"
+                id="income"
+                placeholder="Monthly Income">
+
+            <select id="married">
+
+                <option value="">Marital Status</option>
+
+                <option>Single</option>
+
+                <option>Married</option>
+
+            </select>
+
+            <input type="number"
+                id="children"
+                placeholder="Number of Children">
+
+            <select id="goal">
+
+                <option>Child Education</option>
+
+                <option>Retirement</option>
+
+                <option>Wealth Creation</option>
+
+                <option>Tax Saving</option>
+
+                <option>Family Protection</option>
+
+            </select>
+
+            <button id="generate">
+
+                Generate My Financial Score
+
+            </button>
+
+        </div>
+
+    </section>
+
+    <!-- Loading -->
+
+    <section id="loading">
+
+        <div class="loader"></div>
+
+        <h2>AI is analysing your financial profile...</h2>
+
+        <p>Please wait...</p>
+
+    </section>
+
+    <!-- Result -->
+
+    <section id="result">
+
+        <div class="resultCard">
+
+            <h1>Your Financial Score</h1>
+
+            <div class="scoreCircle">
+    <svg width="180" height="180">
+
+        <circle
+            cx="90"
+            cy="90"
+            r="75"
+            class="bg-circle">
+        </circle>
+
+        <circle
+            cx="90"
+            cy="90"
+            r="75"
+            class="progress-circle"
+            id="progressCircle">
+        </circle>
+
+    </svg>
+
+    <div class="scoreText">
+        <span id="score">0</span>
+    </div>
+</div>
+
+            <h2 id="grade">
+                Good Financial Health
+            </h2>
+
+            <div class="report">
+
+                <p id="saving"></p>
+
+                <p id="insurance"></p>
+
+                <p id="emergency"></p>
+
+                <p id="retirement"></p>
+
+            </div>
+
+            <a id="whatsappBtn"
+                target="_blank">
+
+                Get Personalized Report on WhatsApp
+
+            </a>
+
+            <br><br>
+
+            <a href="tel:+919415612619">
+
+                📞 Call Manoj Srivastava
+
+            </a>
+
+        </div>
+
+    </section>
+
+    <script src="script.js"></script>
+
+</body>
+
+</html>
