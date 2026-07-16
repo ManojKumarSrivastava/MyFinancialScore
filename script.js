@@ -148,14 +148,9 @@ const timer = setInterval(() => {
 
         document.getElementById("retirement").innerHTML=
         "👴 Retirement Investment Suggestion : ₹"+retirement+"/month";
+
+        let aiText="";
         
-aiText=
-"👦 <b>AI सलाह</b><br><br>"+
-"🎓 उच्च शिक्षा हेतु अभी से योजना बनाएं।<br>"+
-"📈 Long Term Investment करें।";
-
-}
-
 if(goal=="Wealth Creation"){
 
 aiText=
