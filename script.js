@@ -115,6 +115,68 @@ const timer = setInterval(() => {
 
         document.getElementById("retirement").innerHTML=
         "👴 Retirement Investment Suggestion : ₹"+retirement+"/month";
+        let aiText="";
+
+if(goal=="Wealth Creation"){
+
+aiText=
+`📈 आपकी आय ₹${income.toLocaleString()} प्रति माह है।
+
+💰 लगभग ₹${saving.toLocaleString()} प्रति माह निवेश करना लाभदायक रहेगा।
+
+🛡 पर्याप्त जीवन बीमा अवश्य रखें।
+
+⭐ नियमित निवेश से आप मजबूत संपत्ति बना सकते हैं।`;
+
+}
+
+else if(goal=="Retirement"){
+
+aiText=
+`👴 अब से Retirement Planning शुरू करना उचित रहेगा।
+
+💰 लगभग ₹${retirement.toLocaleString()} प्रति माह निवेश करें।
+
+🏦 Emergency Fund भी बनाएं।
+
+⭐ भविष्य सुरक्षित रहेगा।`;
+
+}
+
+else if(goal=="Tax Saving"){
+
+aiText=
+`💼 Tax Saving के साथ Wealth Creation भी जरूरी है।
+
+🛡 ऐसा निवेश चुनें जिससे टैक्स बचत और सुरक्षा दोनों मिलें।`;
+
+}
+
+else if(goal=="Family Protection"){
+
+aiText=
+`👨‍👩‍👧 परिवार की सुरक्षा सबसे पहले।
+
+🛡 पर्याप्त Life Insurance रखें।
+
+🏦 Emergency Fund बनाएं।
+
+⭐ परिवार आर्थिक रूप से सुरक्षित रहेगा।`;
+
+}
+
+else{
+
+aiText=
+`🎓 बच्चों के भविष्य के लिए अभी से योजना बनाना उचित रहेगा।
+
+💰 नियमित निवेश करें।
+
+⭐ समय सबसे बड़ी ताकत है।`;
+
+}
+
+document.getElementById("aiMessage").innerHTML=aiText;
 
         let msg=
 `Hello Manoj Ji,
