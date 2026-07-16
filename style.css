@@ -173,10 +173,11 @@ text-align:center;
     margin:30px auto;
 }
 
-.scoreCircle svg{
-    width:180px;
-    height:180px;
-    transform:rotate(-90deg);
+.scoreCircle{
+    position:relative;
+    width:min(180px,80vw);
+    aspect-ratio:1;
+    margin:30px auto;
 }
 
 .bg-circle{
