@@ -278,3 +278,64 @@ width:100%;
 }
 
 }
+/* AI Advisor Card */
+
+.aiCard{
+
+margin-top:25px;
+
+padding:22px;
+
+border-radius:18px;
+
+background:linear-gradient(135deg,#6a11cb,#8e44ad);
+
+color:#fff;
+
+box-shadow:0 10px 25px rgba(0,0,0,.25);
+
+text-align:left;
+
+animation:fadeUp .8s ease;
+
+}
+
+.aiCard h3{
+
+font-size:24px;
+
+margin-bottom:15px;
+
+text-align:center;
+
+}
+
+.aiCard p{
+
+font-size:17px;
+
+line-height:1.8;
+
+margin:0;
+
+}
+
+@keyframes fadeUp{
+
+from{
+
+opacity:0;
+
+transform:translateY(30px);
+
+}
+
+to{
+
+opacity:1;
+
+transform:translateY(0);
+
+}
+
+}
