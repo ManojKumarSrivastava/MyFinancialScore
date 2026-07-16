@@ -221,6 +221,63 @@ generate.onclick=function(){
         document.getElementById("retirement").innerHTML=
         "👴 Retirement Investment Suggestion : ₹"+retirement.toLocaleString()+"/month";
 
+        // ===== AI Advice Logic =====
+
+        let aiMsg="";
+
+        if(married=="Unmarried"){
+
+            aiMsg="आपके पास सबसे बड़ी ताकत समय है। आज से SIP शुरू करें ताकि भविष्य में बड़ा Corpus बन सके।";
+
+        }else if(married=="Married" && children==0){
+
+            aiMsg="परिवार की सुरक्षा के लिए पर्याप्त Life Insurance और Emergency Fund बनाना प्राथमिकता रखें।";
+
+        }else if(children>0){
+
+            let hasGirl=childrenData.some(c=>c.includes("Girl"));
+            let hasBoy=childrenData.some(c=>c.includes("Boy"));
+
+            if(hasGirl && hasBoy){
+
+                aiMsg="बेटी की शिक्षा और भविष्य के लिए दीर्घकालिक निवेश शुरू करें, और बेटे के लिए उच्च शिक्षा व Career Planning हेतु नियमित निवेश करें।";
+
+            }else if(hasGirl){
+
+                aiMsg="बेटी की शिक्षा और भविष्य के लिए दीर्घकालिक निवेश शुरू करें। यदि उपयुक्त हो तो कन्यादान/विवाह निधि जैसी योजनाओं पर भी विचार करें।";
+
+            }else if(hasBoy){
+
+                aiMsg="उच्च शिक्षा और Career Planning के लिए नियमित निवेश शुरू करें।";
+
+            }
+
+        }
+
+        // Goal based advice (added on top)
+
+        if(goal=="Wealth Creation"){
+
+            aiMsg+=" हर महीने SIP/Investment बढ़ाकर लंबी अवधि में संपत्ति निर्माण पर ध्यान दें।";
+
+        }else if(goal=="Retirement"){
+
+            aiMsg+=" Retirement Corpus बनाने के लिए नियमित Pension/Retirement Investment शुरू करें।";
+
+        }else if(goal=="Family Protection"){
+
+            aiMsg+=" पर्याप्त Life Insurance, Health Insurance और Emergency Fund आपकी पहली प्राथमिकता होनी चाहिए।";
+
+        }else if(goal=="Tax Saving"){
+
+            aiMsg+=" ऐसे निवेश विकल्प चुनें जिनसे टैक्स बचत के साथ-साथ Wealth Creation भी हो।";
+
+        }
+
+        document.getElementById("aiMessage").innerHTML=aiMsg;
+
+        // ===== WhatsApp Message =====
+
         let msg=`Hello Manoj Ji,
 
 My Financial Score Report
