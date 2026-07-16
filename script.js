@@ -302,3 +302,20 @@ Please guide me with a suitable financial plan.`;
     },2500);
 
 };
+.aiCard .adviceLabel{
+    display:inline-block;
+    background:rgba(255,255,255,.2);
+    padding:6px 16px;
+    border-radius:30px;
+    font-size:13px;
+    font-weight:600;
+    letter-spacing:.5px;
+    margin-bottom:14px;
+    text-transform:uppercase;
+}
+
+.aiCard #aiMessage{
+    display:block;
+    border-left:3px solid rgba(255,255,255,.6);
+    padding-left:14px;
+}
