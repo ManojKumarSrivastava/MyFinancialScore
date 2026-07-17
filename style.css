@@ -14,13 +14,13 @@ overflow-x:hidden;
 /* HERO */
 
 .hero{
-height:100vh;
+min-height:100vh;
 background:linear-gradient(135deg,#0f4c81,#1c7ed6);
 display:flex;
 justify-content:center;
 align-items:center;
 text-align:center;
-padding:20px;
+padding:40px 20px;
 }
 
 .overlay{
