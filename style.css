@@ -384,3 +384,54 @@ line-height:1.8;
 text-align:center;
 
 }
+/* ================= MOBILE RESPONSIVE ================= */
+
+@media (max-width:768px){
+
+.hero{
+    padding:80px 15px 40px;
+    min-height:auto;
+}
+
+.overlay{
+    width:95%;
+    padding:25px 15px;
+}
+
+.overlay h1{
+    font-size:42px;
+    line-height:1.2;
+}
+
+.overlay h2{
+    font-size:28px;
+    line-height:1.3;
+}
+
+.overlay p{
+    font-size:18px;
+}
+
+.about-box{
+    width:100%;
+    padding:15px;
+    margin:20px auto;
+}
+
+.about-box h3{
+    font-size:24px;
+    line-height:1.4;
+}
+
+.about-box p{
+    font-size:18px;
+    line-height:1.8;
+}
+
+#startBtn{
+    width:100%;
+    max-width:320px;
+    font-size:20px;
+}
+
+}
