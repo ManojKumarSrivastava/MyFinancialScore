@@ -385,3 +385,4 @@ window.open("https://wa.me/?text="+encodeURIComponent(text));
 };
 
 }
+alert("JS Loaded");
