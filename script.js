@@ -385,3 +385,5 @@ window.open("https://wa.me/?text="+encodeURIComponent(text));
 };
 
 }
+
+console.log("JS Loaded Successfully");
