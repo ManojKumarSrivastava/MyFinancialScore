@@ -1,3 +1,10 @@
+// ===== Referral System =====
+
+const params = new URLSearchParams(window.location.search);
+
+let advisorName = params.get("name") || "Manoj Srivastava";
+let advisorMobile = params.get("mobile") || "9415612619";
+
 const startBtn = document.getElementById("startBtn");
 const formSection = document.getElementById("formSection");
 const hero = document.querySelector(".hero");
@@ -298,6 +305,30 @@ Please guide me with a suitable financial plan.`;
 
         document.getElementById("whatsappBtn").href=
         "https://wa.me/919415612619?text="+encodeURIComponent(msg);
+
+        // Hero Name
+const heroName = document.getElementById("advisorHeroName");
+if(heroName){
+    heroName.innerHTML = advisorName;
+}
+
+// Result Page Name
+const advisorTitle = document.getElementById("advisorName");
+if(advisorTitle){
+    advisorTitle.innerHTML = advisorName;
+}
+
+// Call Button
+const callBtn = document.getElementById("callBtn");
+if(callBtn){
+    callBtn.href = "tel:+91" + advisorMobile;
+}
+
+// WhatsApp Button
+const waBtn = document.getElementById("waBtn");
+if(waBtn){
+    waBtn.href = "https://wa.me/91" + advisorMobile;
+}
 
     },2500);
 
