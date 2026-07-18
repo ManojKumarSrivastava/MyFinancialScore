@@ -333,3 +333,55 @@ Please guide me with a suitable financial plan.`;
         },2500);
 
 };
+// ===== Self Referral Link Generator =====
+
+const createLink=document.getElementById("createLink");
+
+if(createLink){
+
+createLink.onclick=function(){
+
+const name=document.getElementById("refName").value.trim();
+
+const mobile=document.getElementById("refMobile").value.trim();
+
+if(name=="" || mobile.length!=10){
+
+alert("Please enter valid Name and WhatsApp Number.");
+
+return;
+
+}
+
+const url=window.location.origin+
+window.location.pathname+
+"?name="+encodeURIComponent(name)+
+"&mobile="+mobile;
+
+document.getElementById("generatedLink").value=url;
+
+document.getElementById("linkBox").style.display="block";
+
+};
+
+document.getElementById("copyLink").onclick=function(){
+
+navigator.clipboard.writeText(
+document.getElementById("generatedLink").value
+);
+
+alert("Referral Link Copied.");
+
+};
+
+document.getElementById("shareLink").onclick=function(){
+
+const link=document.getElementById("generatedLink").value;
+
+const text="Check your FREE AI Financial Health Score:\n\n"+link;
+
+window.open("https://wa.me/?text="+encodeURIComponent(text));
+
+};
+
+}
