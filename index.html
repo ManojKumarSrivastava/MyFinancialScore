@@ -156,7 +156,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 (function(){
   var b=document.getElementById('speakBtn');
   if(!b)return;
-  if(!('speechSynthesis' in window)){b.style.display='none';return;}
+  
   function t(id){var e=document.getElementById(id);return e?e.textContent.trim():'';}
   function build(){
     var p=[];
@@ -168,6 +168,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     return p.join(' ').replace(/₹/g,'रुपये ').replace(/%/g,' प्रतिशत').replace(/EMI/g,'ईएमआई');
   }
   b.addEventListener('click',function(){
+    if(!('speechSynthesis' in window)){alert('इस ब्राउज़र में बोलने की सुविधा नहीं है। कृपया Chrome में खोलिए।');return;}
     var ss=window.speechSynthesis;
     if(ss.speaking){ss.cancel();b.textContent='🔊 सुझाव सुनिए';return;}
     var u=new SpeechSynthesisUtterance(build());
