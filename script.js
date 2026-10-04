@@ -120,29 +120,26 @@ function updateWhatsApp() {
 document.querySelectorAll(".calc, #name, #mobile, #goal").forEach(e => e.addEventListener("input", calculate));
 document.querySelectorAll("select").forEach(e => e.addEventListener("change", calculate));
 
-// ===== Live visitors + likes (counterapi.dev) =====
-const NS = "manojkumarsrivastava-myfinancialscore";
+// ===== Live visitors + likes (Google Apps Script) =====
+const COUNTER_URL = "https://script.google.com/macros/s/AKfycby6SF6hOIt6QL0AxQtjf3XXE4ZDTYd5McTYPVaINZcNYxVEKLLrhYaz5DEUF3aNkmVy2Q/exec";
 const VISITOR_OFFSET = 0; // purane visitor count se shuru karna ho to wo number yahan likhein
-const API = "https://api.counterapi.dev/v1/" + NS + "/";
+const LIKE_OFFSET = 0;    // purane likes se shuru karna ho to wo number yahan likhein
 const num = n => Number(n).toLocaleString("en-IN");
 
-async function hit(key, up) {
+async function hit(action) {
   try {
-    const r = await fetch(API + key + (up ? "/up" : "/"));
+    const r = await fetch(COUNTER_URL + "?a=" + action + "&t=" + Date.now());
     if (!r.ok) throw 0;
-    const d = await r.json();
-    return typeof d.count === "number" ? d.count : 0;
+    return await r.json();
   } catch (e) { return null; }
 }
 
 (async () => {
   const first = !sessionStorage.getItem("seen");
-  const v = await hit("visits", first);
-  if (first) sessionStorage.setItem("seen", "1");
-  $("visitCount").textContent = v === null ? "-" : num(v + VISITOR_OFFSET);
-
-  const likes = await hit("likes", false);
-  $("likeCount").textContent = likes === null ? "-" : num(likes);
+  const d = await hit(first ? "visit" : "get");
+  if (first && d) sessionStorage.setItem("seen", "1");
+  $("visitCount").textContent = d ? num(d.visits + VISITOR_OFFSET) : "-";
+  $("likeCount").textContent = d ? num(d.likes + LIKE_OFFSET) : "-";
   if (localStorage.getItem("liked")) setLiked(true);
 })();
 
@@ -153,11 +150,11 @@ function setLiked(on) {
 }
 $("likeBtn").addEventListener("click", async () => {
   if (localStorage.getItem("liked")) return;
-  const c = await hit("likes", true);
-  if (c === null) return;
+  const d = await hit("like");
+  if (!d) return;
   localStorage.setItem("liked", "1");
   setLiked(true);
-  $("likeCount").textContent = num(c);
+  $("likeCount").textContent = num(d.likes + LIKE_OFFSET);
 });
 
 // ===== Suggestion box (WhatsApp) =====
