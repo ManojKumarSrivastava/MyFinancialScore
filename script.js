@@ -1,389 +1,178 @@
-// ===== Referral System =====
+// ====== SETTINGS: apna number yahan badlein (country code ke saath, bina + ke) ======
+const DEFAULT_NAME = "Manoj Srivastava";
+const DEFAULT_MOBILE = "919415612619"; // <-- yahan apna WhatsApp/Call number daalein
+// ===================================================================================
 
-const params = new URLSearchParams(window.location.search);
+const $ = id => document.getElementById(id);
+const val = el => Math.max(0, parseFloat(typeof el === "string" ? $(el).value : el.value) || 0);
 
-let advisorName = params.get("name") || "Manoj Srivastava";
-let advisorMobile = params.get("mobile") || "9415612619";
+// Advisor info from referral link: ?ref=Name&m=91XXXXXXXXXX
+const qs = new URLSearchParams(location.search);
+const advisor = { name: (qs.get("ref") || DEFAULT_NAME).trim(), mobile: (qs.get("m") || DEFAULT_MOBILE).replace(/\D/g, "") };
+$("advisorHeroName").textContent = advisor.name;
+$("advisorName").textContent = advisor.name;
+$("callBtn").href = "tel:+" + advisor.mobile;
 
-// Hero Name
-const heroName = document.getElementById("advisorHeroName");
-if(heroName){
-    heroName.innerHTML = advisorName;
+function rs(n) {
+  n = Math.round(n);
+  if (n >= 1e7) return "₹" + (n / 1e7).toFixed(2).replace(/\.?0+$/, "") + " करोड़";
+  if (n >= 1e5) return "₹" + (n / 1e5).toFixed(2).replace(/\.?0+$/, "") + " लाख";
+  return "₹" + n.toLocaleString("en-IN");
+}
+const clamp = (x, a, b) => Math.min(b, Math.max(a, x));
+
+let last = {};
+
+function calculate() {
+  const age = val("age") || 35, kids = val("children");
+  const married = $("married").value === "Married";
+  const income = val("income") + val("income2");
+  let spend = 0;
+  document.querySelectorAll(".exp").forEach(e => spend += val(e));
+  const emi = val("emi");
+  const surplus = income - spend;
+  const savePct = income ? surplus / income : 0;
+  const emiPct = income ? emi / income : 0;
+
+  // Insurance need
+  const mult = age <= 35 ? 15 : age <= 45 ? 12 : 10;
+  const needCover = income ? income * 12 * clamp(mult + kids, 10, 25) : 0;
+  const gapCover = Math.max(0, needCover - val("curCover"));
+  let needHealth = married ? 1000000 : 500000;
+  if (kids >= 2) needHealth += 500000;
+  const gapHealth = Math.max(0, needHealth - val("curHealth"));
+  const budget = income ? Math.max(0, Math.min(surplus * 0.5, income * 0.15)) : 0;
+  const emerg = spend * 6;
+  const sav = val("savings");
+
+  // Score (out of 100)
+  const sSave = income ? clamp(savePct / 0.2, 0, 1) * 40 : 0;
+  const sEmi = income ? clamp(20 - (emiPct - 0.2) * 50, 0, 20) : 0;
+  const sCover = needCover ? clamp(val("curCover") / needCover, 0, 1) * 25 : 0;
+  const sEmerg = emerg ? clamp(sav / emerg, 0, 1) * 15 : 0;
+  const score = income ? Math.round(sSave + sEmi + sCover + sEmerg) : 0;
+
+  // Result panel
+  const el = $("surplus");
+  el.textContent = (surplus < 0 ? "-" : "") + rs(Math.abs(surplus));
+  el.className = "big " + (!income ? "" : surplus >= 0 ? "pos" : "neg");
+  $("surplusSub").textContent = !income ? "आमदनी डालते ही यहाँ तुरंत नतीजा दिखेगा"
+    : surplus < 0 ? "खर्च आमदनी से ज़्यादा है - पहले खर्च कम करें"
+    : "आपकी आमदनी का " + Math.round(savePct * 100) + "% हर महीने बचता है";
+
+  const pExp = income ? clamp((spend - emi) / income, 0, 1) : 0;
+  const pEmi = income ? clamp(emiPct, 0, 1 - pExp) : 0;
+  const pSave = income ? clamp(savePct, 0, 1) : 0;
+  $("barExp").style.width = pExp * 100 + "%";
+  $("barEmi").style.width = pEmi * 100 + "%";
+  $("barSave").style.width = pSave * 100 + "%";
+  $("pExp").textContent = Math.round(pExp * 100) + "%";
+  $("pEmi").textContent = Math.round(pEmi * 100) + "%";
+  $("pSave").textContent = Math.round(pSave * 100) + "%";
+
+  $("score").textContent = score;
+  const ring = $("ring");
+  ring.style.strokeDashoffset = 327 * (1 - score / 100);
+  const grade = !income ? "-" : score >= 75 ? "बहुत अच्छी" : score >= 50 ? "ठीक-ठाक, सुधार संभव" : "ध्यान देने की ज़रूरत";
+  ring.style.stroke = score >= 75 ? "#12805c" : score >= 50 ? "#c27a00" : "#c23b3b";
+  $("grade").textContent = grade;
+
+  $("needCover").textContent = income ? rs(needCover) : "-";
+  $("gapCover").textContent = income ? (gapCover ? rs(gapCover) : "पूरा ✔") : "-";
+  $("needHealth").textContent = income ? rs(needHealth) + (gapHealth ? "" : " ✔") : "-";
+  $("budget").textContent = income ? rs(budget) + "/माह" : "-";
+  $("emerg").textContent = income ? rs(emerg) + (sav >= emerg ? " ✔" : " (जमा: " + rs(sav) + ")") : "-";
+  $("emiPct").textContent = income ? Math.round(emiPct * 100) + "%" + (emiPct > 0.4 ? " ⚠" : "") : "-";
+
+  // Tips
+  const tips = [];
+  if (income) {
+    if (surplus < 0) tips.push("खर्च आमदनी से " + rs(-surplus) + " ज़्यादा है। सबसे बड़े खर्च की सूची बनाकर कटौती करें।");
+    else if (savePct < 0.2) tips.push("बचत 20% से कम है। लक्ष्य रखें: हर महीने कम से कम " + rs(income * 0.2) + " बचाना।");
+    if (emiPct > 0.4) tips.push("EMI आमदनी के 40% से ऊपर है - नया लोन न लें और पुराना जल्दी निपटाने की योजना बनाएँ।");
+    if (gapCover > 0) tips.push("परिवार की सुरक्षा के लिए लगभग " + rs(gapCover) + " का Term Plan और लेना चाहिए।");
+    if (gapHealth > 0) tips.push("हेल्थ कवर कम है - " + rs(needHealth) + " तक का Family Floater देखें।");
+    if (budget > 0 && (gapCover > 0 || gapHealth > 0)) tips.push("बीमा पर हर महीने " + rs(budget) + " तक खर्च करना आपके बजट के लिए सुरक्षित है।");
+    if (budget === 0 && (gapCover > 0 || gapHealth > 0)) tips.push("अभी बीमा के लिए बजट नहीं बचता - पहले खर्च घटाएँ, फिर छोटा Term Plan शुरू करें।");
+    if (sav < emerg) tips.push("इमरजेंसी फंड में " + rs(emerg - sav) + " और जोड़ें (6 महीने के खर्च के बराबर)।");
+  }
+  $("tips").innerHTML = tips.slice(0, 5).map(t => "<li>" + t.replace(/</g, "&lt;") + "</li>").join("");
+
+  last = { income, spend, surplus, score, needCover, gapCover, needHealth, budget, emerg };
+  updateWhatsApp();
 }
 
-// Result Page Name
-const advisorTitle = document.getElementById("advisorName");
-if(advisorTitle){
-    advisorTitle.innerHTML = advisorName;
+function updateWhatsApp() {
+  const n = $("name").value.trim(), m = $("mobile").value.trim();
+  const L = last;
+  const msg = "नमस्ते " + advisor.name + " जी,\n" +
+    "मैंने MyFinancialScore पर अपनी जाँच की।\n" +
+    (n ? "नाम: " + n + "\n" : "") + (m ? "मोबाइल: " + m + "\n" : "") +
+    "लक्ष्य: " + $("goal").value + "\n" +
+    "आमदनी: " + rs(L.income || 0) + "/माह | खर्च: " + rs(L.spend || 0) + "/माह\n" +
+    "बचत: " + (L.surplus < 0 ? "-" : "") + rs(Math.abs(L.surplus || 0)) + "/माह\n" +
+    "Financial Score: " + (L.score || 0) + "/100\n" +
+    "सुझाया Term कवर: " + rs(L.needCover || 0) + " | बीमा बजट: " + rs(L.budget || 0) + "/माह\n" +
+    "कृपया मुझे पूरी रिपोर्ट भेजें।";
+  $("whatsappBtn").href = "https://wa.me/" + advisor.mobile + "?text=" + encodeURIComponent(msg);
 }
 
-// Call Button
-const callBtn = document.getElementById("callBtn");
-if(callBtn){
-    callBtn.href = "tel:+91" + advisorMobile;
+document.querySelectorAll(".calc, #name, #mobile, #goal").forEach(e => e.addEventListener("input", calculate));
+document.querySelectorAll("select").forEach(e => e.addEventListener("change", calculate));
+
+// ===== Live visitors + likes (counterapi.dev) =====
+const NS = "manojkumarsrivastava-myfinancialscore";
+const VISITOR_OFFSET = 0; // purane visitor count se shuru karna ho to wo number yahan likhein
+const API = "https://api.counterapi.dev/v1/" + NS + "/";
+const num = n => Number(n).toLocaleString("en-IN");
+
+async function hit(key, up) {
+  try {
+    const r = await fetch(API + key + (up ? "/up" : "/"));
+    if (!r.ok) throw 0;
+    const d = await r.json();
+    return typeof d.count === "number" ? d.count : 0;
+  } catch (e) { return null; }
 }
 
-// WhatsApp Button
-const waBtn = document.getElementById("whatsappBtn");
-if(waBtn){
-    waBtn.href = "https://wa.me/91" + advisorMobile;
+(async () => {
+  const first = !sessionStorage.getItem("seen");
+  const v = await hit("visits", first);
+  if (first) sessionStorage.setItem("seen", "1");
+  $("visitCount").textContent = v === null ? "-" : num(v + VISITOR_OFFSET);
+
+  const likes = await hit("likes", false);
+  $("likeCount").textContent = likes === null ? "-" : num(likes);
+  if (localStorage.getItem("liked")) setLiked(true);
+})();
+
+function setLiked(on) {
+  $("likeBtn").classList.toggle("liked", on);
+  $("likeBtn").setAttribute("aria-pressed", on);
+  $("likeIcon").textContent = on ? "♥" : "♡";
 }
-
-const startBtn = document.getElementById("startBtn");
-const formSection = document.getElementById("formSection");
-const hero = document.querySelector(".hero");
-const loading = document.getElementById("loading");
-const result = document.getElementById("result");
-const generate = document.getElementById("generate");
-const bar = document.getElementById("bar");
-const childrenContainer = document.getElementById("childrenContainer");
-
-// Married Change
-document.getElementById("married").addEventListener("change",function(){
-
-    if(this.value=="Married"){
-
-        document.getElementById("children").disabled=false;
-
-    }else{
-
-        document.getElementById("children").disabled=true;
-        document.getElementById("children").value="";
-        childrenContainer.innerHTML="";
-
-    }
-
+$("likeBtn").addEventListener("click", async () => {
+  if (localStorage.getItem("liked")) return;
+  const c = await hit("likes", true);
+  if (c === null) return;
+  localStorage.setItem("liked", "1");
+  setLiked(true);
+  $("likeCount").textContent = num(c);
 });
 
-// Children Count Change -> Dynamic Gender + Age fields
-document.getElementById("children").addEventListener("input",function(){
-
-    let count=parseInt(this.value)||0;
-
-    if(count>10) count=10;
-    if(count<0) count=0;
-
-    childrenContainer.innerHTML="";
-
-    for(let i=1;i<=count;i++){
-
-        let block=document.createElement("div");
-        block.style.marginBottom="15px";
-        block.style.padding="12px";
-        block.style.border="1px solid #ddd";
-        block.style.borderRadius="10px";
-        block.style.background="#f7f9fc";
-
-        block.innerHTML=`
-            <p style="margin-bottom:10px;font-weight:600;color:#0f4c81;">Child ${i} Details</p>
-
-            <select id="childGender_${i}" style="margin-bottom:10px;">
-                <option value="">Child ${i} Gender</option>
-                <option value="Boy">👦 Boy</option>
-                <option value="Girl">👧 Girl</option>
-            </select>
-
-            <input type="number" id="childAge_${i}" placeholder="Child ${i} Age" min="0" max="30">
-        `;
-
-        childrenContainer.appendChild(block);
-
-    }
-
+// ===== Suggestion box (WhatsApp) =====
+$("sugBtn").addEventListener("click", () => {
+  const box = $("sugBox"), open = box.hidden;
+  box.hidden = !open;
+  $("sugBtn").setAttribute("aria-expanded", open);
+  if (open) $("sugText").focus();
+});
+$("sugSend").addEventListener("click", () => {
+  const t = $("sugText").value.trim();
+  if (!t) { $("sugText").focus(); return; }
+  const n = $("name").value.trim();
+  const msg = "MyFinancialScore पर सुझाव" + (n ? " (" + n + ")" : "") + ":\n" + t;
+  window.open("https://wa.me/" + advisor.mobile + "?text=" + encodeURIComponent(msg), "_blank");
 });
 
-// Start Button
-
-startBtn.onclick=function(){
-
-    hero.style.display="none";
-    formSection.style.display="block";
-    bar.style.width="100%";
-
-};
-
-// Generate Report
-
-generate.onclick=function(){
-
-    let name=document.getElementById("name").value;
-    let mobile=document.getElementById("mobile").value;
-    let age=parseInt(document.getElementById("age").value);
-    let income=parseInt(document.getElementById("income").value);
-
-    let married=document.getElementById("married").value;
-    let gender=document.getElementById("gender").value;
-    let children=parseInt(document.getElementById("children").value)||0;
-    let goal=document.getElementById("goal").value;
-
-    let childrenData=[];
-
-    for(let i=1;i<=children;i++){
-
-        let g=document.getElementById("childGender_"+i)?.value || "Not specified";
-        let a=document.getElementById("childAge_"+i)?.value || "Not specified";
-
-        childrenData.push(`Child ${i}: ${g}, Age ${a}`);
-
-    }
-
-    if(name=="" || mobile=="" || !age || !income){
-
-        alert("Please fill all required fields.");
-        return;
-
-    }
-
-    formSection.style.display="none";
-    loading.style.display="block";
-
-    setTimeout(function(){
-
-        loading.style.display="none";
-        result.style.display="block";
-
-        let score=50;
-
-        if(income>=100000){
-
-            score+=30;
-
-        }else if(income>=50000){
-
-            score+=20;
-
-        }else if(income>=30000){
-
-            score+=15;
-
-        }else{
-
-            score+=10;
-
-        }
-
-        if(age>=25 && age<=45){
-
-            score+=10;
-
-        }
-
-        if(children>0){
-
-            score+=5;
-
-        }
-
-        if(score>100) score=100;
-
-        // Score Animation
-
-        const circle=document.getElementById("progressCircle");
-
-        const radius=75;
-        const circumference=2*Math.PI*radius;
-
-        circle.style.strokeDasharray=circumference;
-        circle.style.strokeDashoffset=circumference;
-
-        let current=0;
-
-        const timer=setInterval(function(){
-
-            current++;
-
-            document.getElementById("score").innerHTML=current;
-
-            const offset=circumference-(current/100)*circumference;
-
-            circle.style.strokeDashoffset=offset;
-
-            if(current>=score){
-
-                clearInterval(timer);
-
-            }
-
-        },20);
-
-        // Grade
-
-        let grade="";
-
-        if(score>=85){
-
-            grade="Excellent Financial Health";
-
-        }else if(score>=70){
-
-            grade="Good Financial Health";
-
-        }else if(score>=55){
-
-            grade="Average Financial Health";
-
-        }else{
-
-            grade="Needs Immediate Planning";
-
-        }
-
-        document.getElementById("grade").innerHTML=grade;
-
-        // Report
-
-        let saving=Math.round(income*0.30);
-
-        let insurance=Math.round(income*120);
-
-        let emergency=Math.round(income*6);
-
-        let retirement=Math.round(income*0.15);
-
-        document.getElementById("saving").innerHTML=
-        "💰 Recommended Monthly Saving : ₹"+saving.toLocaleString();
-
-        document.getElementById("insurance").innerHTML=
-        "🛡 Suggested Life Insurance Cover : ₹"+insurance.toLocaleString();
-
-        document.getElementById("emergency").innerHTML=
-        "🏦 Emergency Fund Target : ₹"+emergency.toLocaleString();
-
-        document.getElementById("retirement").innerHTML=
-        "👴 Retirement Investment Suggestion : ₹"+retirement.toLocaleString()+"/month";
-
-        // ===== AI Advice Logic =====
-
-        let aiMsg="";
-
-        if(married=="Unmarried"){
-
-            aiMsg="आपके पास सबसे बड़ी ताकत समय है। आज से SIP शुरू करें ताकि भविष्य में बड़ा Corpus बन सके।";
-
-        }else if(married=="Married" && children==0){
-
-            aiMsg="परिवार की सुरक्षा के लिए पर्याप्त Life Insurance और Emergency Fund बनाना प्राथमिकता रखें।";
-
-        }else if(children>0){
-
-            let hasGirl=childrenData.some(c=>c.includes("Girl"));
-            let hasBoy=childrenData.some(c=>c.includes("Boy"));
-
-            if(hasGirl && hasBoy){
-
-                aiMsg="बेटी की शिक्षा और भविष्य के लिए दीर्घकालिक निवेश शुरू करें, और बेटे के लिए उच्च शिक्षा व Career Planning हेतु नियमित निवेश करें।";
-
-            }else if(hasGirl){
-
-                aiMsg="बेटी की शिक्षा और भविष्य के लिए दीर्घकालिक निवेश शुरू करें। यदि उपयुक्त हो तो कन्यादान/विवाह निधि जैसी योजनाओं पर भी विचार करें।";
-
-            }else if(hasBoy){
-
-                aiMsg="उच्च शिक्षा और Career Planning के लिए नियमित निवेश शुरू करें।";
-
-            }
-
-        }
-
-        // Goal based advice (added on top)
-
-        if(goal=="Wealth Creation"){
-
-            aiMsg+=" हर महीने SIP/Investment बढ़ाकर लंबी अवधि में संपत्ति निर्माण पर ध्यान दें।";
-
-        }else if(goal=="Retirement"){
-
-            aiMsg+=" Retirement Corpus बनाने के लिए नियमित Pension/Retirement Investment शुरू करें।";
-
-        }else if(goal=="Family Protection"){
-
-            aiMsg+=" पर्याप्त Life Insurance, Health Insurance और Emergency Fund आपकी पहली प्राथमिकता होनी चाहिए।";
-
-        }else if(goal=="Tax Saving"){
-
-            aiMsg+=" ऐसे निवेश विकल्प चुनें जिनसे टैक्स बचत के साथ-साथ Wealth Creation भी हो।";
-
-        }
-
-        document.getElementById("aiMessage").innerHTML=aiMsg;
-
-        // ===== WhatsApp Message =====
-
-        let msg=`Hello ${advisorName} Ji,
-
-My Financial Score Report
-
-Name : ${name}
-
-Mobile : ${mobile}
-
-Age : ${age}
-
-Monthly Income : ₹${income}
-
-Financial Goal : ${goal}
-
-Score : ${score}/100${childrenData.length>0 ? "\nChildren Details:\n"+childrenData.join("\n") : ""}
-
-Please guide me with a suitable financial plan.`;
-
-        document.getElementById("whatsappBtn").href =
-"https://wa.me/91"+advisorMobile+"?text="+encodeURIComponent(msg);
-
-        },2500);
-
-};
-// ===== Self Referral Link Generator =====
-
-const createLink=document.getElementById("createLink");
-
-if(createLink){
-
-createLink.onclick=function(){
-
-const name=document.getElementById("refName").value.trim();
-
-const mobile=document.getElementById("refMobile").value.trim();
-
-if(name=="" || mobile.length!=10){
-
-alert("Please enter valid Name and WhatsApp Number.");
-
-return;
-
-}
-
-const url=window.location.origin+
-window.location.pathname+
-"?name="+encodeURIComponent(name)+
-"&mobile="+mobile;
-
-document.getElementById("generatedLink").value=url;
-
-document.getElementById("linkBox").style.display="block";
-
-};
-
-document.getElementById("copyLink").onclick=function(){
-
-navigator.clipboard.writeText(
-document.getElementById("generatedLink").value
-);
-
-alert("Referral Link Copied.");
-
-};
-
-document.getElementById("shareLink").onclick=function(){
-
-const link=document.getElementById("generatedLink").value;
-
-const text="Check your FREE AI Financial Health Score:\n\n"+link;
-
-window.open("https://wa.me/?text="+encodeURIComponent(text));
-
-};
-
-}
-
-console.log("JS Loaded Successfully");
+calculate();
