@@ -116,6 +116,15 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   "founder": {"@type": "Person", "name": "Manoj Srivastava", "jobTitle": "LIC Advisor"}
 }
 </script>
+<style>
+html{scroll-behavior:smooth}
+.secnav{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+.navbtn{display:inline-block;padding:8px 16px;border-radius:999px;background:#fff;color:#0B3D91;font-weight:600;font-size:.92rem;text-decoration:none;box-shadow:0 1px 4px rgba(0,0,0,.2)}
+.navbtn:active{transform:scale(.97)}
+#calc,#about-advisor,#how-it-works,#faq{scroll-margin-top:12px}
+.backbtn{display:inline-block;margin-top:12px;padding:8px 16px;border-radius:999px;background:#0B3D91;color:#fff;font-weight:600;font-size:.9rem;text-decoration:none}
+#toCalc{position:fixed;right:14px;bottom:18px;z-index:50;display:none;padding:10px 16px;border:0;border-radius:999px;background:#0B3D91;color:#fff;font-weight:600;font-size:.9rem;box-shadow:0 2px 10px rgba(0,0,0,.3);cursor:pointer}
+</style>
 </head>
 <body>
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PJG57GTJ" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -130,6 +139,10 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       <button type="button" class="pill like" id="likeBtn" aria-pressed="false"><span id="likeIcon">♡</span> पसंद आया <b id="likeCount">-</b></button>
       <button type="button" class="pill" id="sugBtn" aria-expanded="false" aria-controls="sugBox">सुझाव दें</button>
     </div>
+    <nav class="secnav" aria-label="जानकारी">
+      <a class="navbtn" href="#about-advisor">👤 About Me</a>
+      <a class="navbtn" href="#faq">❓ FAQ</a>
+    </nav>
     <div class="sug" id="sugBox" hidden>
       <textarea id="sugText" rows="3" placeholder="आपका सुझाव या सुधार की बात लिखिए..."></textarea>
       <button type="button" class="btn" id="sugSend">WhatsApp पर सुझाव भेजें</button>
@@ -137,7 +150,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   </div>
 </header>
 
-<main class="wrap grid">
+<main class="wrap grid" id="calc">
   <section class="inputs" aria-label="Calculator">
 
     <div class="card">
@@ -245,12 +258,14 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <h2>LIC Advisor Manoj Srivastava - प्रयागराज (इलाहाबाद) और वाराणसी</h2>
     <p><b>Manoj Srivastava</b> एक LIC Advisor हैं जो परिवारों को <b>Term Plan</b>, <b>Health Insurance</b> और प्रीमियम की सही प्लानिंग में मदद करते हैं। यह MyFinancialScore कैलकुलेटर उन्होंने इसलिए बनाया है कि हर परिवार बिना किसी शुल्क के अपनी आमदनी, खर्च और बीमा की ज़रूरत खुद जाँच सके।</p>
     <p>प्रयागराज (इलाहाबाद) और वाराणसी में LIC की सलाह के लिए संपर्क करें: <b>Manoj Srivastava, 9415612619</b>। कैलकुलेटर भरने के बाद आप सीधे WhatsApp पर रिपोर्ट भेजकर भी सलाह ले सकते हैं।</p>
+    <a class="backbtn" href="#calc">⬆ कैलकुलेटर पर वापस जाइए</a>
   </section>
 
   <section id="how-it-works">
     <h2>Financial Score और बीमा की ज़रूरत कैसे निकलती है?</h2>
     <p>आपकी महीने की आमदनी, घर के खर्च, EMI, मौजूदा बचत और मौजूदा बीमा कवर देखकर कैलकुलेटर चार बातें जाँचता है: हर महीने कितनी बचत होती है, EMI का बोझ कितना है, परिवार की सुरक्षा के लिए Term Plan कितना कम पड़ रहा है, और इमरजेंसी फंड कितना है। इन्हीं से आपका 100 में से Financial Score बनता है।</p>
     <p>यह एक अनुमानित गणना है। अंतिम फैसला लेने से पहले अपने सलाहकार से बात ज़रूर करें।</p>
+    <a class="backbtn" href="#calc">⬆ कैलकुलेटर पर वापस जाइए</a>
   </section>
 
   <section id="faq">
@@ -262,6 +277,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     <details><summary>इमरजेंसी फंड कितना होना चाहिए?</summary><p>कम से कम 6 महीने के घर खर्च के बराबर रकम अलग से जमा रखनी चाहिए, ताकि नौकरी, बीमारी या किसी और संकट में EMI और बाकी खर्च चलते रहें।</p></details>
     <details><summary>प्रयागराज (इलाहाबाद) और वाराणसी में LIC Advisor कौन हैं?</summary><p>Manoj Srivastava प्रयागराज (इलाहाबाद) और वाराणसी में LIC Advisor के रूप में परिवारों को Term Plan और Health Insurance की सलाह देते हैं। संपर्क नंबर: 9415612619।</p></details>
     <details><summary>LIC Advisor Manoj Srivastava से सलाह कैसे लें?</summary><p>कैलकुलेटर भरने के बाद "WhatsApp पर पूरी रिपोर्ट पाएँ" बटन दबाइए। आपकी जानकारी सीधे Manoj Srivastava तक पहुँच जाएगी और वे आपसे संपर्क करेंगे।</p></details>
+    <a class="backbtn" href="#calc">⬆ कैलकुलेटर पर वापस जाइए</a>
   </section>
 </div>
 
@@ -293,6 +309,16 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
     b.textContent='⏹ रोकिए';
     ss.speak(u);
   });
+})();
+</script>
+<button type="button" id="toCalc" aria-label="कैलकुलेटर पर वापस जाइए">⬆ कैलकुलेटर</button>
+<script>
+(function(){
+  var b=document.getElementById('toCalc'),c=document.getElementById('calc');
+  if(!b||!c)return;
+  function chk(){var r=c.getBoundingClientRect();b.style.display=(r.bottom<0)?'block':'none';}
+  window.addEventListener('scroll',chk,{passive:true});chk();
+  b.addEventListener('click',function(){c.scrollIntoView({behavior:'smooth',block:'start'});});
 })();
 </script>
 </body>
