@@ -132,6 +132,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
       </div>
 
       <h3>आपके लिए सुझाव</h3>
+<button type="button" class="btn ghost" id="speakBtn" style="margin:0 0 12px">🔊 सुझाव सुनिए</button>
       <dl class="rec">
         <div><dt>Term (लाइफ) कवर ज़रूरी</dt><dd id="needCover">-</dd></div>
         <div><dt>इसमें और लेना बाकी</dt><dd id="gapCover">-</dd></div>
@@ -151,5 +152,33 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 </main>
 
 <script src="script.js"></script>
+<script>
+(function(){
+  var b=document.getElementById('speakBtn');
+  if(!b)return;
+  if(!('speechSynthesis' in window)){b.style.display='none';return;}
+  function t(id){var e=document.getElementById(id);return e?e.textContent.trim():'';}
+  function build(){
+    var p=[];
+    document.querySelectorAll('#result dl.rec > div').forEach(function(d){
+      var k=d.querySelector('dt'),v=d.querySelector('dd');
+      if(k&&v&&v.textContent.trim()!=='-')p.push(k.textContent.trim()+' '+v.textContent.trim()+'।');
+    });
+    document.querySelectorAll('#tips li').forEach(function(li){p.push(li.textContent.trim());});
+    return p.join(' ').replace(/₹/g,'रुपये ').replace(/%/g,' प्रतिशत').replace(/EMI/g,'ईएमआई');
+  }
+  b.addEventListener('click',function(){
+    var ss=window.speechSynthesis;
+    if(ss.speaking){ss.cancel();b.textContent='🔊 सुझाव सुनिए';return;}
+    var u=new SpeechSynthesisUtterance(build());
+    u.lang='hi-IN';u.rate=0.95;
+    var v=ss.getVoices().filter(function(x){return x.lang&&x.lang.toLowerCase().indexOf('hi')===0;})[0];
+    if(v)u.voice=v;
+    u.onend=u.onerror=function(){b.textContent='🔊 सुझाव सुनिए';};
+    b.textContent='⏹ रोकिए';
+    ss.speak(u);
+  });
+})();
+</script>
 </body>
 </html>
